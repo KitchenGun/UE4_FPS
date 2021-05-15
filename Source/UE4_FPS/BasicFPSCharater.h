@@ -21,6 +21,8 @@ protected:
 public:
 	void MoveForward(float a_fValue);
 	void MoveRight(float a_fValue);
+	void Turn(float a_fValue);
+	void LookUp(float a_fValue);
 	FVector SpeedLimit(FVector a_moveDir);
 public:	
 	// Called every frame
@@ -29,9 +31,12 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 private:
-	float fMoveForwardSpeed = 1.0f;
-	float fMoveRightSpeed = 1.0f;
-	bool bMoveForwardDir = false;
+	//이동 관련 변수
+	float m_fMoveForwardSpeed = 1.0f;
+	float m_fMoveRightSpeed = 1.0f;
+	bool m_bMoveForwardDir = false;//전진중인지 확인용 변수
 
-	FVector MovementDirection = FVector().ZeroVector;
+	FVector m_VMovementDirection = FVector().ZeroVector;
+	//시선 관련 변수
+	float m_fMouseSensitivity = 1.2f;//민감도
 };
