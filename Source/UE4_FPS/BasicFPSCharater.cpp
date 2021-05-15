@@ -18,22 +18,54 @@ void ABasicFPSCharater::BeginPlay()
 	if (GEngine)
 	{
 		// 5 초간 디버그 메시지를 표시합니다. (첫 인수인) -1 "Key" 값은 이 메시지를 업데이트 또는 새로고칠 필요가 없음을 나타냅니다.
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("We are using FPSCharacter."));
+		GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, TEXT("We are using FPSCharacter."));
 	}
 }
 
-void ABasicFPSCharater::MoveForward(float Value)
+void ABasicFPSCharater::MoveForward(float a_fValue)
 { 
+	//전진 이동중인지 확인용
+	if (a_fValue != 0)
+	{
+		bMoveForwardDir = true;
+	}
+	else
+	{
+		bMoveForwardDir = false;
+	}
 	// 어느 쪽이 전방인지 알아내어, 플레이어가 그 방향으로 이동하고자 한다고 기록합니다.
 	FVector Direction = FRotationMatrix(this->GetControlRotation()).GetScaledAxis(EAxis::X);
-	AddMovementInput(Direction, Value);
+	//대각선 속도 제어를 위한 기록용 x축 이동 기록
+	MovementDirection.X = a_fValue * fMoveForwardSpeed;
+	AddMovementInput(Direction, a_fValue *fMoveForwardSpeed);
+	
 }
 
-void ABasicFPSCharater::MoveRight(float Value)
+void ABasicFPSCharater::MoveRight(float a_fValue)
 {
+	
 	// 어느 쪽이 전방인지 알아내어, 플레이어가 그 방향으로 이동하고자 한다고 기록합니다.
-	FVector Direction = FRotationMatrix(this->GetControlRotation()).GetScaledAxis(EAxis::Y);
-	AddMovementInput(Direction, Value);
+	FVector MoveDir = FRotationMatrix(this->GetControlRotation()).GetScaledAxis(EAxis::Y);
+	if (!bMoveForwardDir)
+	{
+		AddMovementInput(MoveDir, a_fValue * fMoveRightSpeed);
+	}
+	else
+	{
+		//대각선 속도 제어를 위한 기록용 y축 이동 기록
+		MovementDirection.Y = a_fValue * fMoveRightSpeed;
+		MoveDir.Y*=abs(SpeedLimit(MovementDirection).Y);
+		AddMovementInput(MoveDir, a_fValue * fMoveRightSpeed);
+	}
+	UE_LOG(LogTemp, Log, TEXT("%f"), MoveDir.Y);
+}
+
+FVector ABasicFPSCharater::SpeedLimit(FVector a_moveDir)
+{
+	double numerator = sqrt(pow(abs(a_moveDir.X), 2) + pow(abs(a_moveDir.Y), 2));
+	double denominator = (abs(a_moveDir.X) + abs(a_moveDir.Y));
+	double velocityRatio = (numerator / denominator);
+	return a_moveDir* velocityRatio;
 }
 
 // Called every frame

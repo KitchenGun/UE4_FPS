@@ -19,9 +19,9 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 public:
-	void MoveForward(float Value);
-	void MoveRight(float Value);
-
+	void MoveForward(float a_fValue);
+	void MoveRight(float a_fValue);
+	FVector SpeedLimit(FVector a_moveDir);
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -29,8 +29,9 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 private:
-	float fMoveForwardSpeed = 10.0f;
-	float fMoveRightSpeed = 7.0f;
+	float fMoveForwardSpeed = 1.0f;
+	float fMoveRightSpeed = 1.0f;
+	bool bMoveForwardDir = false;
 
-	FVector2D MoveVector = FVector2D().ZeroVector;
+	FVector MovementDirection = FVector().ZeroVector;
 };
