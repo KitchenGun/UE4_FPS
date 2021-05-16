@@ -5,6 +5,12 @@
 
 // Sets default values
 ABasicFPSCharater::ABasicFPSCharater()
+	:
+	m_fMoveForwardSpeed(1.0f),
+	m_fMoveRightSpeed(1.0f),
+	m_bMoveForwardDir(false),
+	m_VMovementDirection(FVector().ZeroVector),
+	m_fMouseSensitivity(1.2f)
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -78,6 +84,16 @@ FVector ABasicFPSCharater::SpeedLimit(FVector a_moveDir)
 	return a_moveDir* velocityRatio;
 }
 
+void ABasicFPSCharater::StartJump()
+{
+	//점프 시작
+}
+
+void ABasicFPSCharater::StopJump()
+{
+	//점프 종료
+}
+
 // Called every frame
 void ABasicFPSCharater::Tick(float DeltaTime)
 {
@@ -97,5 +113,6 @@ void ABasicFPSCharater::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	//시선
 	PlayerInputComponent->BindAxis("Turn", this, &ABasicFPSCharater::Turn);
 	PlayerInputComponent->BindAxis("LookUp", this, &ABasicFPSCharater::LookUp);
+	//점프
 }
 

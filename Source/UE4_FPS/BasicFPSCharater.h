@@ -19,11 +19,19 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 public:
+	//이동
 	void MoveForward(float a_fValue);
 	void MoveRight(float a_fValue);
+	//시선
 	void Turn(float a_fValue);
 	void LookUp(float a_fValue);
 	FVector SpeedLimit(FVector a_moveDir);
+	//UFUNCTION은 블루프린트에 접근을 하게 해준다
+	UFUNCTION()
+	void StartJump();
+	UFUNCTION()
+	void StopJump();
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -32,11 +40,14 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 private:
 	//이동 관련 변수
-	float m_fMoveForwardSpeed = 1.0f;
-	float m_fMoveRightSpeed = 1.0f;
-	bool m_bMoveForwardDir = false;//전진중인지 확인용 변수
+	UPROPERTY(EditAnywhere, Category = "MoveSpeed")
+	float m_fMoveForwardSpeed;
+	UPROPERTY(EditAnywhere, Category = "MoveSpeed")
+	float m_fMoveRightSpeed;
+	bool m_bMoveForwardDir;//전진중인지 확인용 변수
 
-	FVector m_VMovementDirection = FVector().ZeroVector;
+	FVector m_VMovementDirection;
 	//시선 관련 변수
-	float m_fMouseSensitivity = 1.2f;//민감도
+	UPROPERTY(EditAnywhere, Category = "Sensitivity")
+	float m_fMouseSensitivity;//민감도
 };
