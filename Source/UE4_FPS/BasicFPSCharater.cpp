@@ -6,14 +6,18 @@
 // Sets default values
 ABasicFPSCharater::ABasicFPSCharater()
 	:
-	m_fMoveForwardSpeed(1.0f),
-	m_fMoveRightSpeed(1.0f),
+	m_fMoveForwardSpeed(0.7f),
+	m_fMoveRightSpeed(0.4f),
 	m_bMoveForwardDir(false),
 	m_VMovementDirection(FVector().ZeroVector),
-	m_fMouseSensitivity(1.2f)
+	m_fMouseSensitivity(1.2f),
+	m_nJumpCounter(0),
+	m_nJumpMaxCounter(2),
+	m_fJumpHeight(250.0f)
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
 }
 
 // Called when the game starts or when spawned
@@ -26,6 +30,7 @@ void ABasicFPSCharater::BeginPlay()
 		GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, TEXT("We are using FPSCharacter."));
 	}
 }
+
 
 void ABasicFPSCharater::MoveForward(float a_fValue)
 { 
@@ -45,7 +50,6 @@ void ABasicFPSCharater::MoveForward(float a_fValue)
 	AddMovementInput(Direction, a_fValue *m_fMoveForwardSpeed);
 	
 }
-
 void ABasicFPSCharater::MoveRight(float a_fValue)
 {
 	
@@ -66,13 +70,10 @@ void ABasicFPSCharater::MoveRight(float a_fValue)
 
 void ABasicFPSCharater::Turn(float a_fValue)
 {
-	UE_LOG(LogTemp, Log, TEXT("Turn %f   ms%f"), a_fValue * m_fMouseSensitivity, m_fMouseSensitivity);
 	AddControllerYawInput(a_fValue * m_fMouseSensitivity);
 }
-
 void ABasicFPSCharater::LookUp(float a_fValue)
 {
-	UE_LOG(LogTemp, Log, TEXT("LookUp %f"), a_fValue * m_fMouseSensitivity);
 	AddControllerPitchInput(a_fValue * m_fMouseSensitivity);
 }
 
@@ -84,15 +85,20 @@ FVector ABasicFPSCharater::SpeedLimit(FVector a_moveDir)
 	return a_moveDir* velocityRatio;
 }
 
-void ABasicFPSCharater::StartJump()
-{
-	//점프 시작
+void ABasicFPSCharater::DoJump()
+{//기존의 튜토리얼 방식이 아닌 다른 방식으로 구현
+	if (m_nJumpCounter < m_nJumpMaxCounter)
+	{
+		ACharacter::LaunchCharacter(FVector(0, 0, m_fJumpHeight),false,true);
+		m_nJumpCounter++;
+	}
 }
 
-void ABasicFPSCharater::StopJump()
-{
-	//점프 종료
+void ABasicFPSCharater::Landed(const FHitResult& Hit)
+{//지면에 닿을 경우 0으로 만듬
+	m_nJumpCounter = 0;
 }
+
 
 // Called every frame
 void ABasicFPSCharater::Tick(float DeltaTime)
@@ -114,5 +120,6 @@ void ABasicFPSCharater::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAxis("Turn", this, &ABasicFPSCharater::Turn);
 	PlayerInputComponent->BindAxis("LookUp", this, &ABasicFPSCharater::LookUp);
 	//점프
+	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ABasicFPSCharater::DoJump);
 }
 

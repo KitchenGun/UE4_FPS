@@ -14,10 +14,10 @@ class UE4_FPS_API ABasicFPSCharater : public ACharacter
 public:
 	// Sets default values for this character's properties
 	ABasicFPSCharater();
-
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	virtual void Landed(const FHitResult& Hit) override;
 public:
 	//이동
 	void MoveForward(float a_fValue);
@@ -28,9 +28,7 @@ public:
 	FVector SpeedLimit(FVector a_moveDir);
 	//UFUNCTION은 블루프린트에 접근을 하게 해준다
 	UFUNCTION()
-	void StartJump();
-	UFUNCTION()
-	void StopJump();
+	void DoJump();
 
 public:	
 	// Called every frame
@@ -50,4 +48,10 @@ private:
 	//시선 관련 변수
 	UPROPERTY(EditAnywhere, Category = "Sensitivity")
 	float m_fMouseSensitivity;//민감도
+	//점프 관련 변수
+	int m_nJumpCounter;
+	UPROPERTY(EditAnywhere, Category = "Jump")
+	int m_nJumpMaxCounter;
+	UPROPERTY(EditAnywhere, Category = "Jump")
+	float m_fJumpHeight;
 };
