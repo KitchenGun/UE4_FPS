@@ -12,8 +12,8 @@ ABasicFPSCharater::ABasicFPSCharater()
 	m_VMovementDirection(FVector().ZeroVector),
 	m_fMouseSensitivity(1.2f),
 	m_nJumpCounter(0),
-	m_nJumpMaxCounter(2),
-	m_fJumpHeight(250.0f)
+	m_nJumpMaxCounter(1),
+	m_fJumpHeight(400.0f)
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
