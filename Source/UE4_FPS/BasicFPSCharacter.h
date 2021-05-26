@@ -19,6 +19,7 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	virtual void Landed(const FHitResult& Hit) override;
+	virtual void Fire();
 public:
 	//이동
 	void MoveForward(float a_fValue);
@@ -30,6 +31,7 @@ public:
 	//UFUNCTION은 블루프린트에 접근을 하게 해준다
 	UFUNCTION()
 	void DoJump();
+
 
 public:	
 	// Called every frame
@@ -61,5 +63,6 @@ private:
 	//일인칭 mesh
 	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
 	USkeletalMeshComponent* m_oFPSMesh;
+	//사격 제작 
 
 };

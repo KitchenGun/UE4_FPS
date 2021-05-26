@@ -121,6 +121,11 @@ void ABasicFPSCharacter::Landed(const FHitResult& Hit)
 	m_nJumpCounter = 0;
 }
 
+void ABasicFPSCharacter::Fire()
+{//사격
+
+}
+
 // Called every frame
 void ABasicFPSCharacter::Tick(float DeltaTime)
 {
@@ -140,5 +145,7 @@ void ABasicFPSCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 	PlayerInputComponent->BindAxis("LookUp", this, &ABasicFPSCharacter::LookUp);
 	//점프
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ABasicFPSCharacter::DoJump);
+	//사격
+	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &ABasicFPSCharacter::Fire);
 }
 
