@@ -5,6 +5,7 @@
 #include "Runtime/Engine/Classes/Components/InputComponent.h"
 #include "Runtime/Engine/Classes/Components/SkeletalMeshComponent.h"
 #include "Runtime/Engine/Classes/Components/StaticMeshComponent.h"
+#include "DrawDebugHelpers.h"
 
 // Sets default values
 ABasicFPSCharacter::ABasicFPSCharacter()
@@ -123,6 +124,18 @@ void ABasicFPSCharacter::Landed(const FHitResult& Hit)
 
 void ABasicFPSCharacter::Fire()
 {//사격
+	FHitResult oHit;
+	FVector vecStartPos = m_oFPSCameraComponent->GetComponentLocation();
+	FVector vecForward = m_oFPSCameraComponent->GetForwardVector();
+	FVector vecEndPos = vecStartPos + (vecForward * 1000.0f);
+
+	vecStartPos += vecForward;
+	//충돌함수에 전달되는 매개 변수 정의
+	FCollisionQueryParams oCollisionParams;
+	oCollisionParams.AddIgnoredActor(this->GetOwner());
+	
+	//선 그려서 확인용
+	DrawDebugLine(GetWorld(), vecStartPos, vecEndPos, FColor::Green, false, 1, 0, 1);
 
 }
 
