@@ -7,6 +7,15 @@
 #include "Camera/CameraComponent.h"
 #include "BasicFPSCharacter.generated.h"
 
+/*UENUM()  ??? enum이 왜 안되는지 모르겠음
+enum class State : uint8
+{
+	NONE = 0,
+	SINGLE,
+	BURST,
+	AUTO,
+};
+*/
 UCLASS()
 class UE4_FPS_API ABasicFPSCharacter : public ACharacter
 {
@@ -64,5 +73,18 @@ private:
 	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
 	USkeletalMeshComponent* m_oFPSMesh;
 	//사격 제작 
+	//사격
+	bool m_isReadyFire;
+	float m_fRPM;
+	float m_fVerticalRecoil;
+	float m_fHorizontalRecoil;
+	//조준
+	float m_fADSSpeed;
+	//조정간
+	//State m_eGunState;
+	//탄창
+
+	int m_nBullet;
+	float m_fDamage;
 
 };
